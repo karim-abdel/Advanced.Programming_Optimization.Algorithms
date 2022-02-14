@@ -9,6 +9,7 @@ for line in a_file:
   line_list= stripped_line.split()
   list1.append(line_list)
 a_file.close()
+print(list1)
 
 #CREATE THE LP PROBLEM, THE OBJECTIVE AND ALL THE CONSTRAINTS
 

@@ -41,14 +41,18 @@ for name, constraint in prob.constraints.items():
 obj = []
 con = []
 obj.append(list(prob.objective.values()))
+norm = np.flip(obj)
+v = norm[0][0]
+norm[0][0]=-v
+print(norm)
 for o in range(i-1):
     con.append(list(list(prob.constraints.items())[o][1].values()))
 q = np.array(con)
-w = np.array(obj)
+w = np.array(norm)
 
 ##CREATE A LIST THAT CONTAINS THE REMAINDERS OF DIVISION BETWEEN THE COEFFICIENTS OF THE OBJECTIVES AND OF THE CONSTRAINTS
 
-alpha = q%w
+#alpha = q % w
 
 
 
@@ -57,7 +61,7 @@ alpha = q%w
 
 check = 0
 for z in range(i-1):
-   if not alpha[z].any() == True:
+   if (np.dot(q[z],w[0])==0):
         check +=1
    else:
         pass
