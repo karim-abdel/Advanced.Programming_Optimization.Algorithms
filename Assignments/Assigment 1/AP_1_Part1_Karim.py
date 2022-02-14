@@ -42,9 +42,6 @@ q = np.array(con)
 w = np.array(obj)
 ##CREATE A LIST THAT CONTAINS THE REMAINDERS OF DIVISION BETWEEN THE COEFFICIENTS OF THE OBJECTIVES AND OF THE CONSTRAINTS
 alpha = q%w
-#print(con)
-#print(obj)
-#print(alpha)
 
 ## NOW CHECK IF THERE IS A REMAINDER EQUAL TO 0. IF SO, THE SOLUTION IS NOT UNIQUE ( SINCE WE ARE IN R^2 THIS IS ENOUGH)
 ## I CHECK THE REMAINDER OF THE DIVISION AS A WAY TO CHECK IF THE OBJECTIVE FUNCTION IS COLLINEAR TO SOME CONSTRAINT
@@ -60,52 +57,5 @@ if (check == 0):
 else:
     print(("Unique Optimal Solution: No"))
 
-
-
-
-
-
-
-
-
-#print(prob.constraints.values())
-
-
-#for s in range(i-1):
-    #matrix = np.array(list(prob.objective.values()),list(list(prob.constraints.items())[s][1].values()))
-    #indexes = sympy.Matrix(matrix).T.rref()
-    #if len(indexes) == 2:
-      #  pass
-    #else:
-        #check += 1
-    #if ((np.dot(list(prob.objective.values()),list(list(prob.constraints.items())[j][1].values())))==0):
-        #k = False
-    #else:
-        #pass
-
-
-
-
-
-
-
-
-
-
-
-#if (j>=2):
-   # print(("Unique Optimal Solution: Yes"))
-#else:
-  #  print(("Unique Optimal Solution: No"))
-
-
-
-
-#print(LpStatus[status])
-#print(list(prob.objective.values()))
-
-#print(list(prob.objective.values()))
-
-#print(list(list(prob.constraints.items())[j][1].values()))
 
 
