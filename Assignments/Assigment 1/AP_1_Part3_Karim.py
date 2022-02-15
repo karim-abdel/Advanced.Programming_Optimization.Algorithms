@@ -9,7 +9,7 @@ for line in a_file:
   line_list= stripped_line.split()
   list1.append(line_list)
 a_file.close()
-print(list1)
+
 
 #CREATE THE LP PROBLEM, THE OBJECTIVE AND ALL THE CONSTRAINTS
 
@@ -18,9 +18,7 @@ for i in range(1,70):
   comp.append(i)
 prob = LpProblem("Representatives",LpMinimize)
 x_vars = LpVariable.dicts("x",comp,0)
-#y_vars = LpVariable.dicts("Technicians",time,0)
 prob += lpSum(x_vars[i] for i in comp)
-
 ## CLARIFICATION: TAKE THE FIRST VALUE FROM I-TH SUBLIST, SUM TO SECOND VALUE FOR I-TH SUBLIST, ADD THE CONSTRAINT
 ## PUTTING WHAT ABOVE BIGGER OR EQUAL THAN TWO
 
