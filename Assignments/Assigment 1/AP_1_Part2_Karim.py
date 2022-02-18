@@ -26,8 +26,8 @@ prob += -x1 -x2 -x3 -x4 +2*x5 >= x0
 
 #Set constraint due to nature of probabilities
 
-prob += x1 + x2 + x3 + x4 + x5 + x6 >= 1
-prob += x1 + x2 + x3 + x4 + x5 + x6 <= 1
+prob += x1 + x2 + x3 + x4 + x5 + x6 == 1
+
 
 
 # Solve the problem

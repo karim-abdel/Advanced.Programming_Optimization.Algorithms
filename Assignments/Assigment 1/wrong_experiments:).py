@@ -1,5 +1,55 @@
 from pulp import *
 from numpy import *
+
+#failed try for uniqueness of ex 1
+## LET'S DEFINE TWO LIST: "OBJ" WILL CONTAIN THE COEFFICIENTS OF THE OBJECTIVE FUNCTION, WHILE "CON" WILL BE A LIST
+# OF LIST THAT CONTAIN THE COEFFICIENTS OF THE CONSTRAINTS
+
+obj = []
+con = []
+obj.append(list(prob.objective.values()))
+norm = np.flip(obj)
+v = norm[0][0]
+norm[0][0]=-v
+for o in range(i-1):
+    con.append(list(list(prob.constraints.items())[o][1].values()))
+q = np.array(con)
+w = np.array(norm)
+
+##CREATE A LIST THAT CONTAINS THE REMAINDERS OF DIVISION BETWEEN THE COEFFICIENTS OF THE OBJECTIVES AND OF THE CONSTRAINTS
+
+#alpha = q % w
+
+
+
+## NOW CHECK IF THERE IS A REMAINDER EQUAL TO 0. IF SO, THE SOLUTION IS NOT UNIQUE ( SINCE WE ARE IN R^2 THIS IS ENOUGH)
+## I CHECK THE REMAINDER OF THE DIVISION AS A WAY TO CHECK IF THE OBJECTIVE FUNCTION IS COLLINEAR TO SOME CONSTRAINT
+
+check = 0
+for z in range(i-1):
+   if (np.dot(q[z],w[0])==0):
+        check +=1
+   else:
+        pass
+if (check == 0):
+    print(("Unique Optimal Solution: Yes"))
+else:
+    print(("Unique Optimal Solution: No"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#ex 3
 matrix = zeros(shape=(70, 70), dtype=int)
 matrix[1,2] = 1
 matrix[2 ,3] = 1

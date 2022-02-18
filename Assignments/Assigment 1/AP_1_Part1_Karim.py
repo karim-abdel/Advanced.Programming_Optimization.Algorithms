@@ -1,11 +1,12 @@
 from pulp import *
-import numpy as np
 
 ## CREATE THE LP PROBLEM, ADD THE OBJECTIVE FUNCTION AND THE COSTRAINTS
 
 prob = LpProblem("Part_1",LpMinimize)
 x = LpVariable("x", lowBound=-10)
 y = LpVariable("y", upBound=10)
+prob += x >= -10
+prob += y <= 10
 prob += 122*x + 143*y
 prob += 3*x + 2*y <= 10
 prob += 12*x + 14*y >= -12.5
@@ -27,7 +28,7 @@ i = 1
 j = 0
 k = True
 print("Tight constraints:")
-for name, constraint in prob.constraints.items():
+for constraint in prob.constraints.values():
     if ((f"{constraint.value()==0.0}") == "False"):
         i += 1
     else:
@@ -35,40 +36,96 @@ for name, constraint in prob.constraints.items():
         i += 1
         j += 1
 
-## LET'S DEFINE TWO LIST: "OBJ" WILL CONTAIN THE COEFFICIENTS OF THE OBJECTIVE FUNCTION, WHILE "CON" WILL BE A LIST
-# OF LIST THAT CONTAIN THE COEFFICIENTS OF THE CONSTRAINTS
 
-obj = []
-con = []
-obj.append(list(prob.objective.values()))
-norm = np.flip(obj)
-v = norm[0][0]
-norm[0][0]=-v
-print(norm)
-for o in range(i-1):
-    con.append(list(list(prob.constraints.items())[o][1].values()))
-q = np.array(con)
-w = np.array(norm)
+firstx = value(x)
+firsty = value(y)
 
-##CREATE A LIST THAT CONTAINS THE REMAINDERS OF DIVISION BETWEEN THE COEFFICIENTS OF THE OBJECTIVES AND OF THE CONSTRAINTS
+k = True
+##UNIQUENESS - CREATE NEW LINEAR PROGRAMS TO CHECK THE UNIQUENESS
 
-#alpha = q % w
+##First new LP
+prob1 = LpProblem('Unique_1',LpMinimize)
+x1 = LpVariable("x1", lowBound=-10)
+y = LpVariable("y", upBound=10)
+prob1 += x1
+prob1 += x1 >= -10
+prob1 += y <= 10
+prob1 += 122*x1 + 143*y == -122
+prob1 += 3*x1 + 2*y <= 10
+prob1 += 12*x1 + 14*y >= -12.5
+prob1 += 2*x1 + 3*y >= 3
+prob1 += 5*x1 -6*y >= -100
+status = prob1.solve(PULP_CBC_CMD(msg=False))
+if value(x1) == firstx:
+    pass
+else:
+    k = False
+#print("Optimal solution:", "x1 =", (value(x1)) )
 
 
+##Second new LP
+prob2 = LpProblem('Unique_2',LpMaximize)
+x2 = LpVariable("x2", lowBound=-10)
+y = LpVariable("y", upBound=10)
+prob2 += x2
+prob2 += x2 >= -10
+prob2 += y <= 10
+prob2 += 122*x2 + 143*y == -122
+prob2 += 3*x2 + 2*y <= 10
+prob2 += 12*x2 + 14*y >= -12.5
+prob2 += 2*x2 + 3*y >= 3
+prob2 += 5*x2 -6*y >= -100
+status = prob2.solve(PULP_CBC_CMD(msg=False))
+if value(x2) == firstx:
+    pass
+else:
+    k = False
 
-## NOW CHECK IF THERE IS A REMAINDER EQUAL TO 0. IF SO, THE SOLUTION IS NOT UNIQUE ( SINCE WE ARE IN R^2 THIS IS ENOUGH)
-## I CHECK THE REMAINDER OF THE DIVISION AS A WAY TO CHECK IF THE OBJECTIVE FUNCTION IS COLLINEAR TO SOME CONSTRAINT
+#print("Optimal solution:", "x2 =", (value(x2)) )
 
-check = 0
-for z in range(i-1):
-   if (np.dot(q[z],w[0])==0):
-        check +=1
-   else:
-        pass
-if (check == 0):
+#Third LP
+prob3 = LpProblem('Unique_3',LpMaximize)
+x = LpVariable("x", lowBound=-10)
+y1 = LpVariable("y1", upBound=10)
+prob3 += y1
+prob3 += x >= -10
+prob3 += y1 <= 10
+prob3 += 122*x + 143*y1 == -122
+prob3 += 3*x + 2*y1 <= 10
+prob3 += 12*x + 14*y1 >= -12.5
+prob3 += 2*x + 3*y1 >= 3
+prob3 += 5*x -6*y1 >= -100
+status = prob3.solve(PULP_CBC_CMD(msg=False))
+if value(y1) == firsty:
+    pass
+else:
+    k = False
+#print("Optimal solution:", "y1 =", (value(y1)) )
+
+#Fourth LP
+prob4 = LpProblem('Unique_4',LpMaximize)
+x = LpVariable("x", lowBound=-10)
+y2 = LpVariable("y2", upBound=10)
+prob4 += y2
+prob4 += x >= -10
+prob4 += y2 <= 10
+prob4 += 122*x + 143*y2 == -122
+prob4 += 3*x + 2*y2 <= 10
+prob4 += 12*x + 14*y2 >= -12.5
+prob4 += 2*x + 3*y2 >= 3
+prob4 += 5*x -6*y2 >= -100
+status = prob4.solve(PULP_CBC_CMD(msg=False))
+if value(y2) == firsty:
+    pass
+else:
+    k = False
+
+#print("Optimal solution:", "y2 =", (value(y2)) )
+
+
+#SINCE WE KEPT TRACK OF THE SOLUTION OF THE UNIQUENESS WITH K, LET'S JUST CHECK IT
+if (k == True):
     print(("Unique Optimal Solution: Yes"))
 else:
     print(("Unique Optimal Solution: No"))
-
-
 
