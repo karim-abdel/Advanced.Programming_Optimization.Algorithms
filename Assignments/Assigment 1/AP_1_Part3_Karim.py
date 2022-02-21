@@ -26,14 +26,13 @@ for i in range(0,len(list1)):
   prob += (x_vars[(int(list1[i][0]))] + x_vars[(int(list1[i][1]))]) >= 2
 
 
-#SOLVE THE PROBLEM : KEEP TRACK OF HOW MANY REPRESENTATIVES, AND PROGRESSIVELY PRINT THE VALUE OF EACH ONE OF THE,
+#SOLVE THE PROBLEM : PRINT THE NUMBER OF REPRESENTATIVE FOR EACH COMPANY, AND PRINT THE TOTAL.
 
 status = prob.solve(PULP_CBC_CMD(msg=False))
-tot = 0.0
-for v in prob.variables():
-    tot += v.varValue
-    print(v.name, ":", v.varValue)
-print('The total number of representative is',tot)
+for i in comp:
+    print("Representatives from company",i,":",value(x_vars[i]))
+print('The total number of representative envolved is',value(prob.objective))
+
 
 
 

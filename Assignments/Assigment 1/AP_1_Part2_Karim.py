@@ -24,7 +24,7 @@ prob += -x1 -x2 -x3 +2*x4 -2*x6 >= x0
 prob += -x1 -x2 -x3 -x4 +2*x5 >= x0
 
 
-#Set constraint due to nature of probabilities
+#SET A CONSTRAINT CONSIDERING PROBABILITIES HAS TO SUM UP TO 1 IN THIS CASE
 
 prob += x1 + x2 + x3 + x4 + x5 + x6 == 1
 

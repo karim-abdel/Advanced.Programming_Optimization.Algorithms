@@ -1,13 +1,13 @@
 from pulp import *
 
-## CREATE THE LP PROBLEM, ADD THE OBJECTIVE FUNCTION AND THE COSTRAINTS
+## CREATE THE LP PROBLEM, ADD THE OBJECTIVE FUNCTION AND THE CONSTRAINTS
 
 prob = LpProblem("Part_1",LpMinimize)
 x = LpVariable("x", lowBound=-10)
 y = LpVariable("y", upBound=10)
+prob += 122*x + 143*y
 prob += x >= -10
 prob += y <= 10
-prob += 122*x + 143*y
 prob += 3*x + 2*y <= 10
 prob += 12*x + 14*y >= -12.5
 prob += 2*x + 3*y >= 3
@@ -40,7 +40,7 @@ for constraint in prob.constraints.values():
 firstx = value(x)
 firsty = value(y)
 
-k = True
+k = 0
 ##UNIQUENESS - CREATE NEW LINEAR PROGRAMS TO CHECK THE UNIQUENESS
 
 ##First new LP
@@ -59,7 +59,7 @@ status = prob1.solve(PULP_CBC_CMD(msg=False))
 if value(x1) == firstx:
     pass
 else:
-    k = False
+    k += 1
 #print("Optimal solution:", "x1 =", (value(x1)) )
 
 
@@ -79,7 +79,7 @@ status = prob2.solve(PULP_CBC_CMD(msg=False))
 if value(x2) == firstx:
     pass
 else:
-    k = False
+    k +=1
 
 #print("Optimal solution:", "x2 =", (value(x2)) )
 
@@ -99,11 +99,11 @@ status = prob3.solve(PULP_CBC_CMD(msg=False))
 if value(y1) == firsty:
     pass
 else:
-    k = False
+    k += 1
 #print("Optimal solution:", "y1 =", (value(y1)) )
 
 #Fourth LP
-prob4 = LpProblem('Unique_4',LpMaximize)
+prob4 = LpProblem('Unique_4',LpMinimize)
 x = LpVariable("x", lowBound=-10)
 y2 = LpVariable("y2", upBound=10)
 prob4 += y2
@@ -118,13 +118,13 @@ status = prob4.solve(PULP_CBC_CMD(msg=False))
 if value(y2) == firsty:
     pass
 else:
-    k = False
+    k +=1
 
 #print("Optimal solution:", "y2 =", (value(y2)) )
 
 
-#SINCE WE KEPT TRACK OF THE SOLUTION OF THE UNIQUENESS WITH K, LET'S JUST CHECK IT
-if (k == True):
+#CHECK UNIQUENESS OF THE SOLUTION
+if (k == 0):
     print(("Unique Optimal Solution: Yes"))
 else:
     print(("Unique Optimal Solution: No"))
