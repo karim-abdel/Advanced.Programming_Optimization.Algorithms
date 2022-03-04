@@ -85,7 +85,7 @@ data.append(data12)
 
 ##CREATING GRAPHS
 
-
+print(len(data1))
 G1 = nx.DiGraph()
 for i in range(len(data1)):
     for j in range(len(data1[0])):
@@ -310,6 +310,7 @@ for f in range(10):
             for k in range(80):
                 if data1[f][h] != 0 or data5[j][k] != 0:
                     G15.add_edge(('1',f,h),('5',j,k),weight = (column5 - column1)%80)
+print(G15)
 
 
 G16 = nx.compose(G1,G6)
